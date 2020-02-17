@@ -1,0 +1,178 @@
+# !!!!A branch is just a pointer (reference) to a commit!!!!
+# Branches can be found in the ./.git/ref directory
+# forks are a github feature. Instead of cloning a repo which isn't youor you can use a fork. A fork creates a remote copy of a remote repository on your github account. Then you can clone your remote to your local machine. Any changes you might want to do you can submit to your remote. If you want to update your remote with the original repo you can pull the changes from the original to your local repo, solve the conflicts and push to your repo. You can also try to submit code to the original (upstream) by means of a pull request.
+
+# forcing a push causes the master branch to point at the forced commit, the conflicting commit has therefore no reference and will be gabrabe collected
+git push -f
+
+# to avoid problems with git push -f one (if arise) one has to fetch the remote repo (the origin/master branch will be uptdate) and then one has to solve the conflict between local branch and the origin branch on our machine by doing a merge
+git fetch 
+git merge 
+git merge --no-ff # no fast forward commit (can be done if on master there were no new commits - of course if we talk about merging to master) 
+# instead one can do this two operations in one sweep by typing 
+git pull
+
+git clone http://the.url.to.the.repo.com
+# gets a repo from remote
+
+git init
+# Initialize the local directory as a Git repository.
+
+git add .
+# Adds the files in the local repository and stages them for commit. To unstage a file, use 'git reset HEAD YOUR-FILE'.
+
+git diff --name-only --cached
+# list of staged files
+
+git diff --cached
+git diff HEAD HEAD~2 (changes between present and 2 commits earlier
+git diff branch1 branch2
+
+git log branch1..branch2 --oneline 
+# shows differences that would be merged during a merge
+# show is a powerful tool has many options e.g.
+git show <commit>~n #show n-th commit before
+git show <commit>^^^^^ #5 commits ago
+git show <tag_name>~3 # and so on
+.. # range
+~n # n ago
+^ # one ago
+
+# git commits creates a commit and it moves the current branch to this commit (the still points at this commit)
+git commit -m "First commit"
+# Commits the tracked changes and prepares them to be pushed to a remote repository. To remove this commit and modify the file, use 'git reset --soft HEAD~1' and commit and add the file again.
+# This command records or snapshots the file permanently in the version history.
+git commit --amend 
+# To add changes to your last commit (without creating a new commit -- in fact a new commit with a new hash is created and the HEAD is changed to point to the new commit while the old commit will be garbage collected)
+
+git remote add origin remote_repository_URL
+# Sets the new remote
+# git remote add [variable name] [Remote Server Link]
+# This command is used to connect your local repository to the remote server.
+
+git remote -v
+# Verifies the new remote URL
+
+git push -u origin master
+
+# git reset moves the currant branch, and optionally copies data from the Repository to the other areas
+git reset HEAD -- .
+# removes all files from the git staging area
+
+git reset --hard HEAD
+# copies the repo from local to index and working area (it undoes all changes, the simplest way to lose information, be carefull)
+
+git reset –hard [commit]
+# This command discards all history and goes back to the specified commit which you can find with the 'git log' command.
+
+git reset [commit]
+# Points the branch pointer to a given commit
+
+rm -rf .git
+# Delete the local repository in your user folder
+# Be careful, dangerous command, it will erase your repository
+# Make sure that you run this from the right folder
+
+git status
+# This command lists all the files that have to be committed.
+
+git log
+# This command is used to list the version history for the current branch.
+
+git show [commit]
+# This command shows the metadata and content changes of the specified commit which you can find with the 'git log' command.
+
+git config –global user.name “[name]”
+git config –global user.email “[email address]”
+# This command sets the author name and email address respectively to be used with your commits
+
+git rm [file]
+# This command deletes the file from your working directory and stages the deletion.
+
+git rm --cached [file]
+# This command deletes the file from the index (stage area)
+
+git mv filename new_filename
+# Renames the file (git will pick it up automatically while staging)
+
+git branch
+# This command lists all the local branches in the current repository.
+git branch [branch name]
+# This command creates a new branch.
+git branch -d [branch name]
+This command deletes the feature branch.
+
+git blame my_file
+# See who changed what and when in my_file.
+
+git revert my_commit
+# Undo the effects of changes in my_commit. revert makes a new commit when it undoes the changes. Next you want of course to push your commit
+# be careful when you use it to revert a merge
+
+git grep "foo()"
+# Search the working directory for foo()
+
+# git checkout moves HEAD so it points to another branch and replaces the files in our workspace
+
+# how to use rebase instead of merge
+git pull # do it on master to have locally the up to date version of the master 
+git checkout -b new_feature # to create a new feature branch (git checkout does 2 things, it changes the HEAD in the repository to another commit and it copies the files to the index and working area) 
+git add .
+git commit -m 'some meaningful comment' # add commits to your local feature branch
+# meanwhile some developers push commits to the remote master
+git checkout master
+git pull # we do it to make sure that to local master is up to date with the remote master
+git checkout new_feature #go to the deature branch
+git rebase master # anchor the feature branch against the lastest changes on the local master
+# here is the part to solve conflicts if any have occured
+git checkout master # go to local master
+git rebase new_feature # rebase master againts the new_feature branch 
+git push # --force-with-lease # sends all the changes to the remote master 
+
+git rebase --interactive HEAD~5
+# squash commits (in this example last 5)
+
+git log --graph
+git log --graph --decorate --oneline
+# to see the three
+
+# Never create branches of feature branches (while rebasing)
+# Atomic commits (small but useful!)
+# Every commit has to work
+# Subject line <= 50 characters
+
+git stash --include-untracked (serial number)(last by default) 
+git stash list
+git stash apply 
+git stash clear
+
+git cat-file #hash_of_a_commit_or_file rather -p
+# -p stands for pretty printing
+# -t stands for type	
+
+git count-objects
+# counts the number of objects stored in the repo (commits, trees [directories], blobs [files], annotated tags
+git tag -a mytag -m 'My super tag'
+git tag
+
+# a merge is just a commit which has two parents
+git merge branch_you_want_to_merge_into_current_branch
+# if conflict arise one have to manually change the file (or by a special util)
+# e.g. nano conflicting.file.txt
+# then we have to let git know that we have solved the conflict by adding this file to the index (yet again)
+git add conflicting.file.txt
+# and we have to commit this changes (in this context commit means something different)
+# a successful merge results in a new commit and the current branch pointing to that commit (HEAD still points to the current branch) 
+git commit
+
+# tagi dzieli się na lightweight i annotated. Jest to po prostu referencja do commita.
+# Przeydają sie w sytuacji gdy potrzebujemy mieć referencję do jakiegoś commita.
+git tag tag_name hash(optional, otherwise current commit) -a (annotated) -m 'message'
+
+git cherry-pick <commit> # merges only a commit to current branch
+
+git reflog
+# shows the history but in the order of referencing commits
+# can save ones ass if you mess up rebasing
+
+

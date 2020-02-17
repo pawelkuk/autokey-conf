@@ -1,0 +1,96 @@
+module -show -avail -list #pokazuje dostępne moduły 
+
+'|' - the Pipe is a command in Linux that lets you use two or more commands such that output of one command serves as input to the next. In short, the output of each process directly as input to the next one like a pipeline, e.g. cat filename | less 
+
+>/< for input/out redirecting one can use </> signs (> is the same as 1>; 1 -- STDOUT, 0 -- STDIN, 2--STDERR)
+>> means appending to a file e.g.
+ls -lah some_file >> ~/Desktop/log.txt 2> ~/Desktop/err.log.txt
+
+grep --help (for options, can recursively search through files in a directory tree)
+grep search_string filemame
+
+Useful trick for searching information from man pages is to save the man page to a file and use grep to find lines with matching patterns.
+
+& use after a command to run a job in background (the terminal is not blocked using this method)
+
+uname -a 
+
+find /path/to/directory -name *pattern* -type d/f
+ls *pattern*
+find /path/to/directory -name *pattern* -exec rm -i {} \; #command to execute 
+
+sftp login@serwer.if.pw.edu.pl //put lcd lls cd ls ...
+
+lld executable.program #pokazuje jakie biblioteki sa zlinkowane
+
+cp plik katalog
+
+sed -replaces strings in files e.g.
+sed -i 's/foo/bar/g' file*patern*
+
+whereis command  (finds the location of a command) e.g.
+whereis ls
+
+locate command allows you to quickly search for the location of a specific file (or group of files). Locate command uses the database created by updatedb.
+locate file*name
+
+lsblk
+Often you will find the need to list the available block devices of your Linux system. The lsblk is one of the most used Linux commands for this purpose. This handy terminal command will present you with a tree structure of your block devices
+
+kill number_of_process_which_can_be_found_by_top
+kill kills the process 
+
+touch file_name 
+The touch command is an essential Linux command for creating a valid empty file. You can create files on the go in your terminal and fill them up later or in real-time – based on your requirements. It’s also the go-to command for changing the timestamps.
+
+stat file_name
+gives some stats about the file like the times it has been previously modified, the size, the name, the access, etc.
+
+head file_name
+The head command allows you to view the beginning of a file or piped data directly from the terminal.
+
+cal
+cal gives you the calendar
+
+yes,rev,fortune
+
+rsync copies files or directories between places like remote and local. One can use it similarly to cp
+
+xdg-open . 
+# opens the current directory (op alias)
+
+rsync -avze ssh gabrielw@login.icm.edu.pl:~/tmp_files/*pattern* /home/pawkuk/workspace/kzpca_ferron/rsync_files
+rsync -avze ssh /home/pawkuk/workspace/kzpca_ferron/ferronCode/* plgpawelkuk@prometheus.cyfronet.pl:/net/people/plgpawelkuk/kzpca_ferron
+rsync -avze ssh plgpawelkuk@prometheus.cyfronet.pl:/net/people/plgpawelkuk/kzpca_ferron/calcs/* /home/pawkuk/workspace/kzpca_ferron/rsync_files
+
+To write a script one has to include a shebang at the top of the file
+#!/bin/bash
+#!/bin/bash -x (for debug mode, one can use also set -x {enable} set -x {disable})
+#Don't forget to change the permissions so you can execute the file chmod +x script_name.sh
+#Execute by typing ./script_name.sh
+#Here you can type a script
+
+sort is a simple and very useful command which will rearrange the lines in a text file so that they are sorted, numerically and alphabetically
+sort file_name.txt
+
+alias pokaz='ls -l'
+alias gives an alias to a command according to the syntax above
+
+ifconfig
+ifconfig is a system administration utility in Unix-like operating systems for network interface configuration.
+
+source file_name_with_commands 
+# source reads and executes commands from given FILENAME and returns
+
+type command_name
+# type command tells you wheter a name is already a command or another type of executable
+
+sudo apt remove package_name
+#removes a program from the computer
+
+
+free -h 
+# Display amount of free and used memory in the system.
+
+lsblk -a -b -f -t -i 
+# Lists information about devices.
